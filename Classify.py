@@ -26,6 +26,14 @@ import matplotlib.pyplot as plt
 from sklearn.metrics import classification_report, confusion_matrix, accuracy_score, roc_curve, auc, roc_auc_score
 from sklearn.model_selection import StratifiedKFold, cross_val_score, train_test_split
 
+##
+from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier, GradientBoostingClassifier
+from sklearn.svm import SVC
+from sklearn.naive_bayes import GaussianNB
+from sklearn.linear_model import LogisticRegression
+from sklearn.neighbors import KNeighborsClassifier
+##
+
 import warnings
 from sklearn.exceptions import UndefinedMetricWarning
 from sklearn.neural_network import MLPClassifier
@@ -51,14 +59,24 @@ class Classifier:
 		X = np.array(X)
 
 		names = [
-				"Neural Networks"
+				"Neural Networks",
+				"Random Forest", #added
+				"AdaBoost", #added
+				"Gradient Boosting", #added
+				"SVM", #added
+				"Naive Bayes" #added
 				]
 		classifiers = [
 						# Neural Networks
 						# solver: The solver for weight optimization
 						# lbfgs - is an optimizer in the family of quasi-Newton methods
 						# works good with smaller datasets
-						MLPClassifier(solver='lbfgs', alpha=1e-5, hidden_layer_sizes=(5, 2), random_state=0)
+						MLPClassifier(solver='lbfgs', alpha=1e-5, hidden_layer_sizes=(5, 2), random_state=0),
+      					RandomForestClassifier(n_estimators=100, random_state=0),
+						AdaBoostClassifier(random_state=0),
+						GradientBoostingClassifier(random_state=0),
+						SVC(kernel='rbf', probability=True, random_state=0),
+						GaussianNB()
 		]
 
 		# It's not an n-fold cross validation but a split
