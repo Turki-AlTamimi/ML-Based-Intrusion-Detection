@@ -47,7 +47,7 @@ if __name__=="__main__":
 		if dataset.isna().any(axis=None) == True:
 			print("Missing values still present in the dataset")
 			sys.exit(1)
-		CL.classify(dataset, csv_filename)
+		CL.classify(dataset, csv_filename, testSize=50) #added test size of 50 instead of 20
 	else:
 		print("ERROR:Nothing to classify in file %s"%csv_filename)
 
