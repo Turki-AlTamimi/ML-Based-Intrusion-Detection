@@ -58,7 +58,7 @@ else:
     print("ERROR:Nothing to classify in file %s"%csv_filename)
     
 ## -------------------------------------------
-	print("--- IDS END ---")
+print("--- IDS END ---")
 
 #-------------------------------------------------------------------------------------------------
 # This dataset contains 5000 records of features extracted from Network Port Statistic to protect
@@ -106,4 +106,5 @@ else:
 # Max Size - Returns the maximum size of this table.
 # Label - Label types (CLASSES) for intrusions
 #-------------------------------------------------------------------------------------------------
+
 
