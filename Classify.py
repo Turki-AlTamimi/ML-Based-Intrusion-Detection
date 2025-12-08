@@ -26,13 +26,13 @@ import matplotlib.pyplot as plt
 from sklearn.metrics import classification_report, confusion_matrix, accuracy_score, roc_curve, auc, roc_auc_score
 from sklearn.model_selection import StratifiedKFold, cross_val_score, train_test_split
 
-##
+## ------------------------------------
 from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier, GradientBoostingClassifier, VotingClassifier
 from sklearn.svm import SVC
 from sklearn.naive_bayes import GaussianNB
 from sklearn.linear_model import LogisticRegression
 from sklearn.neighbors import KNeighborsClassifier
-##
+## ------------------------------------
 
 import warnings
 from sklearn.exceptions import UndefinedMetricWarning, ConvergenceWarning   
@@ -43,8 +43,9 @@ __DEBUG__  = True
 #
 #
 #
+##--------------------------------
 warnings.filterwarnings("ignore", category=ConvergenceWarning)
-
+## -------------------------------
 class Classifier:
 	def __init__(self, CLASS_LABEL, file_types):
 		self.CLASS_LABEL = CLASS_LABEL
@@ -216,3 +217,4 @@ class Classifier:
 		result += "Average Precision = " + str(mean_precision) + "\n\n"
 
 		return result
+
