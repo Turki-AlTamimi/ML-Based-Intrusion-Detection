@@ -100,7 +100,8 @@ class Classifier:
 			weights=weights
 		)
 		classifiers.append(ensemble)
-
+## ------------------------------------------------------------------------------------------------------------
+		
 		# It's not an n-fold cross validation but a split
 		ts = testSize
 		testSize = testSize / 100
@@ -217,4 +218,5 @@ class Classifier:
 		result += "Average Precision = " + str(mean_precision) + "\n\n"
 
 		return result
+
 
