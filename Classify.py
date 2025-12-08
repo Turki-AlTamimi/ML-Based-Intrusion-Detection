@@ -90,7 +90,7 @@ class Classifier:
 		ensemble = VotingClassifier(
 			estimators=[
 				('nn',  MLPClassifier(solver='lbfgs', alpha=1e-5, hidden_layer_sizes=(5, 2), random_state=0)),
-				('rf',  RandomForestClassifier(n_estimators=100, random_state=0)),
+				('rf',  RandomForestClassifier(n_estimators=100, class_weight='balanced', random_state=0)),
 				('ada', AdaBoostClassifier(random_state=0)),
 				('gb',  GradientBoostingClassifier(random_state=0)),
 				('svm', SVC(kernel='rbf', probability=True, random_state=0)),
@@ -218,5 +218,6 @@ class Classifier:
 		result += "Average Precision = " + str(mean_precision) + "\n\n"
 
 		return result
+
 
 
