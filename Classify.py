@@ -27,7 +27,7 @@ from sklearn.metrics import classification_report, confusion_matrix, accuracy_sc
 from sklearn.model_selection import StratifiedKFold, cross_val_score, train_test_split
 
 ##
-from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier, GradientBoostingClassifier
+from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier, GradientBoostingClassifier, VotingClassifier
 from sklearn.svm import SVC
 from sklearn.naive_bayes import GaussianNB
 from sklearn.linear_model import LogisticRegression
@@ -35,7 +35,7 @@ from sklearn.neighbors import KNeighborsClassifier
 ##
 
 import warnings
-from sklearn.exceptions import UndefinedMetricWarning
+from sklearn.exceptions import UndefinedMetricWarning, ConvergenceWarning   
 from sklearn.neural_network import MLPClassifier
 
 __DEBUG__  = True
@@ -43,6 +43,8 @@ __DEBUG__  = True
 #
 #
 #
+warnings.filterwarnings("ignore", category=ConvergenceWarning)
+
 class Classifier:
 	def __init__(self, CLASS_LABEL, file_types):
 		self.CLASS_LABEL = CLASS_LABEL
@@ -65,6 +67,7 @@ class Classifier:
 				"Gradient Boosting", #added
 				"SVM", #added
 				"Naive Bayes" #added
+				
 				]
 		classifiers = [
 						# Neural Networks
@@ -78,6 +81,24 @@ class Classifier:
 						SVC(kernel='rbf', probability=True, random_state=0),
 						GaussianNB()
 		]
+
+  
+		# ---------- weighted ensemble ----------
+		names.append("Weighted Ensemble")
+		weights = [0, 5, 3, 6, 1, 2]   # order matching the tuple list below
+		ensemble = VotingClassifier(
+			estimators=[
+				('nn',  MLPClassifier(solver='lbfgs', alpha=1e-5, hidden_layer_sizes=(5, 2), random_state=0)),
+				('rf',  RandomForestClassifier(n_estimators=100, random_state=0)),
+				('ada', AdaBoostClassifier(random_state=0)),
+				('gb',  GradientBoostingClassifier(random_state=0)),
+				('svm', SVC(kernel='rbf', probability=True, random_state=0)),
+				('nb',  GaussianNB())
+			],
+			voting='soft',
+			weights=weights
+		)
+		classifiers.append(ensemble)
 
 		# It's not an n-fold cross validation but a split
 		ts = testSize
