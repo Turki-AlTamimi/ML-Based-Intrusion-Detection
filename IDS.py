@@ -41,16 +41,23 @@ if __name__=="__main__":
 	dataset = pd.read_csv(csv_filename)
 	dataset.rename(columns={"Label": CLASS_LABEL}, inplace=True)
 	print(dataset)
-	if len(dataset) >= 29:   # more than 29 samples
-		if dataset.isna().any(axis=None) == True:
-			dataset.interpolate(method='linear', inplace=True)
-		if dataset.isna().any(axis=None) == True:
-			print("Missing values still present in the dataset")
-			sys.exit(1)
-		CL.classify(dataset, csv_filename, testSize=50) #added test size of 50 instead of 20
-	else:
-		print("ERROR:Nothing to classify in file %s"%csv_filename)
+    ## ----------------------------------------------- Z
+if len(dataset) >= 29:
+    if dataset.isna().any(axis=None) == True:
+        dataset.interpolate(method='linear', inplace=True)
+    if dataset.isna().any(axis=None) == True:
+        print("Missing values still present in the dataset")
+        sys.exit(1)
 
+    # 20% test size (original)
+    CL.classify(dataset, csv_filename, testSize=20)
+
+    # 50% test size (Task 2)
+    CL.classify(dataset, csv_filename, testSize=50)
+else:
+    print("ERROR:Nothing to classify in file %s"%csv_filename)
+    
+## -------------------------------------------
 	print("--- IDS END ---")
 
 #-------------------------------------------------------------------------------------------------
@@ -99,3 +106,4 @@ if __name__=="__main__":
 # Max Size - Returns the maximum size of this table.
 # Label - Label types (CLASSES) for intrusions
 #-------------------------------------------------------------------------------------------------
+
