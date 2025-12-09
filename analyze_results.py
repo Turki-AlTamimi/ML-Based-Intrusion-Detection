@@ -1,7 +1,11 @@
 import re
 import os
 import pandas as pd
-import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt 
+OUTPUT_DIR = "plots"
+
+if not os.path.exists(OUTPUT_DIR):
+    os.makedirs(OUTPUT_DIR)
 
 # ---------- 1) function to parse one results file ----------
 
@@ -93,7 +97,7 @@ def main():
     plt.title("Comparison of Average TPR (20% vs 50%)")
     plt.legend()
     plt.tight_layout()
-    plt.savefig("compare_tpr_20_50.png", dpi=300)
+    plt.savefig(os.path.join(OUTPUT_DIR, "compare_tpr_20_50.png"), dpi=300)
 
     # =============== 2) FPR ===============
     plt.figure(figsize=(10, 6))
@@ -108,7 +112,7 @@ def main():
     plt.title("Comparison of Average FPR (20% vs 50%)")
     plt.legend()
     plt.tight_layout()
-    plt.savefig("compare_fpr_20_50.png", dpi=300)
+    plt.savefig(os.path.join(OUTPUT_DIR,"compare_fpr_20_50.png"), dpi=300)
 
     # =============== 3) Accuracy ===============
     plt.figure(figsize=(10, 6))
@@ -123,7 +127,7 @@ def main():
     plt.title("Comparison of Average Accuracy (20% vs 50%)")
     plt.legend()
     plt.tight_layout()
-    plt.savefig("compare_accuracy_20_50.png", dpi=300)
+    plt.savefig(os.path.join(OUTPUT_DIR,"compare_accuracy_20_50.png"), dpi=300)
 
     # =============== 4) F1 Score ===============
     plt.figure(figsize=(10, 6))
@@ -138,7 +142,7 @@ def main():
     plt.title("Comparison of Average F1 Score (20% vs 50%)")
     plt.legend()
     plt.tight_layout()
-    plt.savefig("compare_f1_20_50.png", dpi=300)
+    plt.savefig(os.path.join(OUTPUT_DIR,"compare_f1_20_50.png"), dpi=300)
 
     print("\n✅ Saved plots:")
     print("  - compare_tpr_20_50.png")
