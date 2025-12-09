@@ -1,5 +1,5 @@
 @echo off
-REM ===== Intrusion Detection System + Results Analysis =====
+
 
 
 echo.
@@ -22,6 +22,7 @@ python Visualize_Results.py -results data.csv_50.results.txt
 echo.
 echo Done. Press any key to exit...
 pause >nul
+
 
 
 
