@@ -85,7 +85,7 @@ class Classifier:
 
   
 		# ---------- weighted ensemble ----------
-		names.append("Weighted Ensemble")
+		names.append("Weighted Ensemble Voting")
 		weights = [0, 5, 3, 6, 1, 2]   # order matching the tuple list below
 		ensemble = VotingClassifier(
 			estimators=[
@@ -218,6 +218,7 @@ class Classifier:
 		result += "Average Precision = " + str(mean_precision) + "\n\n"
 
 		return result
+
 
 
 
