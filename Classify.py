@@ -45,8 +45,8 @@ class Classifier:
 				"Gradient Boosting", #added
 				"SVM", #added
 				"Naive Bayes" #added
-				
 				]
+		
 		classifiers = [
         	HistGradientBoostingClassifier(random_state=0, class_weight='balanced'),
 			MLPClassifier(solver='lbfgs', alpha=1e-5, hidden_layer_sizes=(5, 2), random_state=0),
@@ -68,7 +68,7 @@ class Classifier:
   
 		# ---------- weighted ensemble voting ----------
 		names.append("Weighted Ensemble Voting")
-		weights = [8, 0, 5, 3, 6, 1, 2]   # order matching the tuple list below
+		weights = [8, 0, 0, 3, 6, 1, 2]   # order matching the tuple list below
 		ensemble = VotingClassifier(
 			estimators=[
 				('hgb', classifiers[0]),
@@ -200,5 +200,6 @@ class Classifier:
 		result += "Average Precision = " + str(mean_precision) + "\n\n"
 
 		return result
+
 
 
