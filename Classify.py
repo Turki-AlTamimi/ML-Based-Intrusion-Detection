@@ -38,7 +38,7 @@ class Classifier:
 		X = np.array(X)
 
 		names = [
-				"HistGradientBoosting" #best
+				"HistGradientBoosting", #best
 				"Neural Networks",
 				"Random Forest", #added
 				"AdaBoost", #added
@@ -204,3 +204,4 @@ class Classifier:
 		result += "Average Precision = " + str(mean_precision) + "\n\n"
 
 		return result
+
