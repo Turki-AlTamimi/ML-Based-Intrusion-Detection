@@ -1,51 +1,27 @@
-# --------------------------------------------------------------------------------------------------------------
-#
-# Filename: Classify.py
-# Author: Shahid Alam (shalam3@gmail.com)
-# Dated: September, 3, 2025
-#
-# --- TASK 1 ---
-# What is a True Positive Rate (TPR)?
-# What is a False Positive Rate (FPR)?
-# What TPR and FPR is produced by the MLPClassifier?
-# Is it possible to improve these values and how, give two approaches?
-#
-# --- TASK 2 ---
-# Enhance the IDS by improving the results, i.e., TPR and FPR.
-# Implement five more classifiers and print the results for each classifier.
-# Change the test size to 50%, repeat the classification and print the results for each classifier.
-#
-# --------------------------------------------------------------------------------------------------------------
-
 from __future__ import print_function
 import sys, math, time
 import numpy as np
 import pandas as pd
-
 import matplotlib.pyplot as plt
 from sklearn.metrics import classification_report, confusion_matrix, accuracy_score, roc_curve, auc, roc_auc_score
 from sklearn.model_selection import StratifiedKFold, cross_val_score, train_test_split
-
-## ------------------------------------
 from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier, GradientBoostingClassifier, VotingClassifier
 from sklearn.svm import SVC
 from sklearn.naive_bayes import GaussianNB
-from sklearn.linear_model import LogisticRegression
-from sklearn.neighbors import KNeighborsClassifier
-## ------------------------------------
-
 import warnings
 from sklearn.exceptions import UndefinedMetricWarning, ConvergenceWarning   
 from sklearn.neural_network import MLPClassifier
+from sklearn.calibration import CalibratedClassifierCV
+from sklearn.ensemble import HistGradientBoostingClassifier
+
 
 __DEBUG__  = True
 
 #
 #
 #
-##--------------------------------
 warnings.filterwarnings("ignore", category=ConvergenceWarning)
-## -------------------------------
+
 class Classifier:
 	def __init__(self, CLASS_LABEL, file_types):
 		self.CLASS_LABEL = CLASS_LABEL
@@ -62,6 +38,7 @@ class Classifier:
 		X = np.array(X)
 
 		names = [
+				"HistGradientBoosting" #best
 				"Neural Networks",
 				"Random Forest", #added
 				"AdaBoost", #added
@@ -71,37 +48,46 @@ class Classifier:
 				
 				]
 		classifiers = [
-						# Neural Networks
-						# solver: The solver for weight optimization
-						# lbfgs - is an optimizer in the family of quasi-Newton methods
-						# works good with smaller datasets
-						MLPClassifier(solver='lbfgs', alpha=1e-5, hidden_layer_sizes=(5, 2), random_state=0),
-      					RandomForestClassifier(n_estimators=100, random_state=0),
-						AdaBoostClassifier(random_state=0),
-						GradientBoostingClassifier(random_state=0),
-						SVC(kernel='rbf', probability=True, random_state=0),
-						GaussianNB()
+		    CalibratedClassifierCV(
+        		HistGradientBoostingClassifier(random_state=0, class_weight='balanced'),
+        	method='isotonic'
+    		),
+			CalibratedClassifierCV(
+				MLPClassifier(solver='lbfgs', alpha=1e-5, hidden_layer_sizes=(5, 2), random_state=0),
+    		method='isotonic'),
+			CalibratedClassifierCV(
+      			RandomForestClassifier(n_estimators=100, random_state=0, class_weight='balanced'),
+			method='isotonic'),
+			CalibratedClassifierCV(
+				AdaBoostClassifier(random_state=0),
+			method='isotonic'),
+					GradientBoostingClassifier(random_state=0),
+				SVC(kernel='rbf', probability=True, random_state=0),
+			CalibratedClassifierCV(
+    			GaussianNB(),
+       		method='isotonic'
+         )
 		]
 
   
-		# ---------- weighted ensemble ----------
+		# ---------- weighted ensemble voting ----------
 		names.append("Weighted Ensemble Voting")
-		weights = [0, 5, 3, 6, 1, 2]   # order matching the tuple list below
+		weights = [8, 0, 5, 3, 6, 1, 2]   # order matching the tuple list below
 		ensemble = VotingClassifier(
 			estimators=[
-				('nn',  MLPClassifier(solver='lbfgs', alpha=1e-5, hidden_layer_sizes=(5, 2), random_state=0)),
-				('rf',  RandomForestClassifier(n_estimators=100, class_weight='balanced', random_state=0)),
-				('ada', AdaBoostClassifier(random_state=0)),
-				('gb',  GradientBoostingClassifier(random_state=0)),
-				('svm', SVC(kernel='rbf', probability=True, random_state=0)),
-				('nb',  GaussianNB())
+				('hgb', classifiers[0]),
+				('nn',  classifiers[1]),
+				('rf',  classifiers[2]),
+				('ada', classifiers[3]),
+				('gb',  classifiers[4]),
+				('svm', classifiers[5]),
+				('nb',  classifiers[6])
 			],
 			voting='soft',
 			weights=weights
 		)
 		classifiers.append(ensemble)
-## ------------------------------------------------------------------------------------------------------------
-		
+
 		# It's not an n-fold cross validation but a split
 		ts = testSize
 		testSize = testSize / 100
@@ -218,7 +204,3 @@ class Classifier:
 		result += "Average Precision = " + str(mean_precision) + "\n\n"
 
 		return result
-
-
-
-
