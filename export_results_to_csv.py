@@ -75,6 +75,12 @@ def main():
 
     # Output CSV
     output_name = "combined_results.csv"
+    if os.path.exists(output_name):
+        try:
+          os.remove(output_name)
+        except:
+         print("❌ Cannot overwrite combined_results.csv. Make sure it is closed.")
+        return
     final_df.to_csv(output_name, index=False)
 
     print("\n✅ DONE! File saved:", output_name)
