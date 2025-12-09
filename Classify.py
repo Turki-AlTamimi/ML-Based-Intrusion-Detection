@@ -45,13 +45,12 @@ class Classifier:
 				"Gradient Boosting", #added
 				"SVM", #added
 				"Naive Bayes" #added
+				
 				]
-		
 		classifiers = [
-        	HistGradientBoostingClassifier(random_state=0, class_weight='balanced'),
-			MLPClassifier(solver='lbfgs', alpha=1e-5, hidden_layer_sizes=(5, 2), random_state=0),
-			SVC(kernel='rbf', probability=True, random_state=0),
-			## Calibrated Classifiers ##
+        		HistGradientBoostingClassifier(random_state=0, class_weight='balanced'),
+				MLPClassifier(solver='lbfgs', alpha=1e-5, hidden_layer_sizes=(5, 2), random_state=0),
+    		## Calibrated Classifiers ##
 			CalibratedClassifierCV(
       			RandomForestClassifier(n_estimators=100, random_state=0, class_weight='balanced'),
 			method='isotonic'),
@@ -59,6 +58,7 @@ class Classifier:
 				AdaBoostClassifier(random_state=0),
 			method='isotonic'),
 					GradientBoostingClassifier(random_state=0),
+				SVC(kernel='rbf', probability=True, random_state=0),
 			CalibratedClassifierCV(
     			GaussianNB(),
        		method='isotonic'
@@ -68,7 +68,7 @@ class Classifier:
   
 		# ---------- weighted ensemble voting ----------
 		names.append("Weighted Ensemble Voting")
-		weights = [8, 0, 0, 3, 6, 1, 2]   # order matching the tuple list below
+		weights = [9, 0, 4, 2, 7, 1, 1]   # order matching the tuple list below
 		ensemble = VotingClassifier(
 			estimators=[
 				('hgb', classifiers[0]),
@@ -101,12 +101,6 @@ class Classifier:
 			n += 1
 		file_result.close()
 
-	#
-	# It's not an n-fold cross validation but a %age split,
-	# e.g., 80% training and 20% testing
-	# clf is the classifier passed
-	# e.g., NaiveBayes, RandomForest etc
-	#
 	def classify_with_split(self, cn, train_X, test_X, train_y, test_y, clf, file_result, filename_roc):
 		try:
 			result = cn
@@ -142,9 +136,6 @@ class Classifier:
 			print("Error:Classify::classify_with_split: Value Error!")
 			pass
 
-	#
-	#
-	#
 	def classification_results(self, cm, class_labels):
 		result = ""
 
@@ -200,6 +191,3 @@ class Classifier:
 		result += "Average Precision = " + str(mean_precision) + "\n\n"
 
 		return result
-
-
-
