@@ -1,5 +1,6 @@
 import sys
 import argparse
+import os
 import re
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -9,6 +10,12 @@ from matplotlib.patches import Rectangle
 import warnings
 warnings.filterwarnings('ignore')
 
+# Create output folder for plots
+OUTPUT_DIR = "plots"
+
+if not os.path.exists(OUTPUT_DIR):
+    os.makedirs(OUTPUT_DIR)
+    
 # Set style for better-looking plots
 sns.set_style("whitegrid")
 plt.rcParams['figure.figsize'] = (14, 10)
@@ -114,7 +121,7 @@ class ResultsVisualizer:
         axes[1, 2].axis('off')
         
         plt.tight_layout()
-        plt.savefig('classifier_comparison.png', dpi=300, bbox_inches='tight')
+        plt.savefig(os.path.join(OUTPUT_DIR, 'classifier_comparison.png'  ), dpi=300, bbox_inches='tight')
         print("✓ Saved: classifier_comparison.png")
         plt.close()
     
@@ -155,7 +162,7 @@ class ResultsVisualizer:
         axes[1, 2].axis('off')
         
         plt.tight_layout()
-        plt.savefig('performance_heatmaps.png', dpi=300, bbox_inches='tight')
+        plt.savefig(os.path.join(OUTPUT_DIR,'performance_heatmaps.png' ), dpi=300, bbox_inches='tight')
         print("✓ Saved: performance_heatmaps.png")
         plt.close()
     
@@ -200,7 +207,7 @@ class ResultsVisualizer:
             ax.grid(True)
         
         plt.tight_layout()
-        plt.savefig('radar_charts_top4.png', dpi=300, bbox_inches='tight')
+        plt.savefig(os.path.join(OUTPUT_DIR,'radar_charts_top4.png' ), dpi=300, bbox_inches='tight')
         print("✓ Saved: radar_charts_top4.png")
         plt.close()
     
@@ -263,7 +270,7 @@ class ResultsVisualizer:
         plt.setp(ax2.xaxis.get_majorticklabels(), rotation=45, ha='right')
         
         plt.tight_layout()
-        plt.savefig('class_difficulty_analysis.png', dpi=300, bbox_inches='tight')
+        plt.savefig(os.path.join(OUTPUT_DIR,'class_difficulty_analysis.png' ), dpi=300, bbox_inches='tight')
         print("✓ Saved: class_difficulty_analysis.png")
         plt.close()
     
@@ -354,7 +361,7 @@ class ResultsVisualizer:
                 fontsize=12, verticalalignment='top', fontfamily='monospace',
                 bbox=dict(boxstyle='round', facecolor='lightgreen', alpha=0.3))
         
-        plt.savefig('summary_report.png', dpi=300, bbox_inches='tight')
+        plt.savefig(os.path.join(OUTPUT_DIR,'summary_report.png'), dpi=300, bbox_inches='tight')
         print("✓ Saved: summary_report.png")
         plt.close()
     
