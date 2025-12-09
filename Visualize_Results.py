@@ -1,13 +1,3 @@
-# --------------------------------------------------------------------------------------------------------------
-#
-# Filename: Visualize_Results.py
-# Author: Advanced IDS Visualization Tool
-# Purpose: Generate comprehensive visual statistics from IDS classifier results
-#
-# Usage: python Visualize_Results.py -results <results_file.txt>
-#
-# --------------------------------------------------------------------------------------------------------------
-
 import sys
 import argparse
 import re
@@ -277,44 +267,6 @@ class ResultsVisualizer:
         print("✓ Saved: class_difficulty_analysis.png")
         plt.close()
     
-    def plot_tpr_fpr_tradeoff(self):
-        """Plot TPR vs FPR tradeoff for each classifier"""
-        fig, ax = plt.subplots(figsize=(12, 10))
-        
-        colors = sns.color_palette("husl", len(self.classifiers))
-        
-        for idx, clf in enumerate(self.classifiers):
-            avg_tpr = self.metrics_data[clf]['Avg_TPR']
-            avg_fpr = self.metrics_data[clf]['Avg_FPR']
-            
-            ax.scatter(avg_fpr, avg_tpr, s=300, alpha=0.6, 
-                      color=colors[idx], edgecolors='black', linewidth=2,
-                      label=clf)
-            ax.annotate(clf, (avg_fpr, avg_tpr), 
-                       xytext=(10, 5), textcoords='offset points',
-                       fontsize=9, fontweight='bold')
-        
-        # Add diagonal line
-        ax.plot([0, 1], [0, 1], 'k--', alpha=0.3, label='Random Classifier')
-        
-        # Shade the ideal region
-        ax.fill_between([0, 0.2], [0.8, 0.8], [1, 1], 
-                        alpha=0.1, color='green', label='Ideal Region')
-        
-        ax.set_xlabel('Average False Positive Rate (FPR)', fontweight='bold', fontsize=12)
-        ax.set_ylabel('Average True Positive Rate (TPR)', fontweight='bold', fontsize=12)
-        ax.set_title('TPR vs FPR Tradeoff - Classifier Comparison\n(Closer to top-left is better)', 
-                    fontweight='bold', fontsize=14, pad=15)
-        ax.legend(loc='lower right', fontsize=10)
-        ax.grid(True, alpha=0.3)
-        ax.set_xlim([-0.05, 1.05])
-        ax.set_ylim([-0.05, 1.05])
-        
-        plt.tight_layout()
-        plt.savefig('tpr_fpr_tradeoff.png', dpi=300, bbox_inches='tight')
-        print("✓ Saved: tpr_fpr_tradeoff.png")
-        plt.close()
-    
     def create_summary_report(self):
         """Create a summary statistics report"""
         fig = plt.figure(figsize=(16, 12))
@@ -424,7 +376,6 @@ class ResultsVisualizer:
         self.plot_heatmaps()
         self.plot_radar_charts()
         self.plot_class_difficulty()
-        self.plot_tpr_fpr_tradeoff()
         self.create_summary_report()
         
         print("-" * 60)
@@ -434,8 +385,7 @@ class ResultsVisualizer:
         print("  2. performance_heatmaps.png")
         print("  3. radar_charts_top4.png")
         print("  4. class_difficulty_analysis.png")
-        print("  5. tpr_fpr_tradeoff.png")
-        print("  6. summary_report.png")
+        print("  5. summary_report.png")
         print("\n" + "="*60 + "\n")
 
 
