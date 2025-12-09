@@ -1,8 +1,6 @@
 @echo off
 REM ===== Intrusion Detection System + Results Analysis =====
 
-REM ---------- هنا المسار الي فيه الملفات الاخرى
-cd /d "C:\Users\zyadd\Desktop\hail university\1) Network Security\project-for-students"
 
 echo.
 echo [STEP 1] Running IDS.py on data.csv ...
@@ -24,5 +22,6 @@ python Visualize_Results.py -results data.csv_50.results.txt
 echo.
 echo Done. Press any key to exit...
 pause >nul
+
 
 
