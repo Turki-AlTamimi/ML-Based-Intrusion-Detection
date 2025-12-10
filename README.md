@@ -1,99 +1,279 @@
-# **Intrusion Detection System (IDS) Final Project**
+# Intrusion Detection System (IDS) - Machine Learning Pipeline
 
- 
+A comprehensive network intrusion detection system that leverages multiple machine learning classifiers to identify cyber attacks from network port statistics. This project provides automated model training, evaluation, and extensive performance visualization for 6 network traffic classes.
 
- 
+---
 
-**Students:**
+## 🎯 Overview
 
-Abdulaziz Alessa \- 202303806
+This IDS pipeline processes network flow data to classify traffic into normal and attack categories. It compares 7 individual classifiers plus a weighted ensemble method, generates detailed performance metrics, and creates publication-ready visualizations. The system supports configurable test/train splits and exports results in multiple formats.
 
-Turki Alsalama \- 202303811
+---
 
-Ziyad Abdulqader – 202303781
+## ✨ Features
 
-Mutlaq Allahaydan \- 202303804
+- **Multi-Classifier Framework**: Compares 8 ML algorithms including Gradient Boosting, Neural Networks, Random Forest, SVM, and Ensemble Voting
+- **Dual Test Split Analysis**: Automatically evaluates models on both 20% and 50% test data splits
+- **Comprehensive Metrics**: Calculates TPR, FPR, Accuracy, F1-Score, and Precision per-class and averaged
+- **Rich Visualizations**: Generates bar charts, heatmaps, radar charts, and summary reports
+- **Cross-Platform**: Supports both Unix/Linux and Windows execution
+- **Publication-Ready**: High-resolution (300 DPI) plots saved automatically
+- **Automated Pipeline**: Single command runs the entire workflow from data to visualizations
 
-Omran Salam \- 202303796
+---
 
- 
+## 📁 Project Structure
 
- 
+```
+IDS-Project/
+├── IDS.py                      # Main pipeline orchestrator
+├── Classify.py                 # Core classifier implementation
+├── analyze_results.py          # Compare 20% vs 50% test splits
+├── export_results_to_csv.py    # Export metrics to CSV
+├── Visualize_Results.py        # Generate advanced visualizations
+├── run_ids_unix.sh            # Unix/Linux execution script
+├── run_ids_win.bat            # Windows execution script
+├── requirements.txt           # Python dependencies
+└── README.md                  # This file
+```
 
- 
+---
 
- 
+## 🚀 Quick Start
 
- 
+### Prerequisites
 
-**Instructor: Shahid Alam**
+- Python 3.7+
+- pip package manager
 
-**Date: 12/10/2025**
+### Installation
 
-**Introduction:**
+1. Clone the repository:
+```bash
+git clone <repository-url>
+cd IDS-Project
+```
 
-This project focuses on building an Intrusion Detection System (IDS) using machine learning techniques to detect different types of network attacks. The dataset used (`data.csv`) contains various traffic features and labels representing normal activity and several attack types such as Blackhole, TCP-SYN, PortScan, Diversion, and Overflow.
+2. Install dependencies:
+```bash
+pip install -r requirements.txt
+```
 
-Multiple machine learning classifiers were trained and evaluated, including Neural Networks, Random Forest, AdaBoost, Gradient Boosting, SVM, and Naive Bayes. Their performance was measured using metrics such as True Positive Rate (TPR), False Positive Rate (FPR), Accuracy, Precision, and F1-score.
+3. Prepare your dataset (`data.csv`) in the project root
 
-In addition, a Voting Ensemble Classifier was implemented as a bonus requirement to combine several models and improve the overall detection rate. The goal of the project is to compare the classifiers and identify the most effective model for intrusion detection.
+### Running the Pipeline
 
-### **Python Libraries Used**
+**On Linux/Unix/Mac:**
+```bash
+chmod +x run_ids_unix.sh
+./run_ids_unix.sh
+```
 
-The Intrusion Detection System (IDS) was implemented using several key Python libraries:
+**On Windows:**
+```bash
+run_ids_win.bat
+```
 
-* **NumPy** – Used for numerical operations and handling arrays required for computing confusion matrix values (TP, FP, FN, TN) and other statistical metrics.
+**Manual Execution (if needed):**
+```bash
+python IDS.py -csv data.csv
+python analyze_results.py
+python export_results_to_csv.py
+python Visualize_Results.py -results data.csv_50.results.txt
+```
 
-* **Pandas** – Used to load, preprocess, and manage the dataset (`data.csv`). It provided tools for handling missing values and separating features from the class labels.
+---
 
-* **Matplotlib** – Used to generate visualizations such as ROC curves that help assess classifier performance.
+## 📊 Classifiers Implemented
 
-* **Scikit-Learn (sklearn)** – The main machine learning framework used in this project.  
-   It provided:
+| Classifier | Description | Key Parameters |
+|------------|-------------|----------------|
+| **HistGradientBoosting** | State-of-the-art gradient boosting | `class_weight='balanced'` |
+| **Neural Networks** | Multi-layer perceptron | 2 hidden layers, L-BFGS solver |
+| **Random Forest** | 100 trees with isotonic calibration | `class_weight='balanced'` |
+| **AdaBoost** | Adaptive boosting with calibration | Isotonic calibration |
+| **Gradient Boosting** | Classical gradient boosting | Default sklearn parameters |
+| **SVM** | RBF kernel support vector machine | `probability=True` |
+| **Naive Bayes** | Gaussian Naive Bayes with calibration | Isotonic calibration |
+| **Weighted Ensemble** | Soft voting ensemble | Custom weights [0.25, 0.01, 0.02, 0.25, 0.18, 0.09, 0.05] |
 
-  * **Model Selection Tools:** `train_test_split` for splitting the dataset into training and testing sets.
+---
 
-  * **Evaluation Metrics:** `classification_report`, `confusion_matrix`, `accuracy_score`, `roc_curve`, `auc` for measuring classifier performance.
+## 📈 Output Files
 
-**TASK 1:**
+### Results
+- `data.csv_20.results.txt` - Metrics for 20% test split
+- `data.csv_50.results.txt` - Metrics for 50% test split
+- `combined_results.csv` - Consolidated metrics in CSV format
 
-### **1\. What is a True Positive Rate (TPR)?**
+### Visualizations (saved in `plots/` directory)
 
-The **True Positive Rate (TPR),** also known as *Recall* or *Sensitivity*, measures how many of the actual positive cases (e.g., attacks) are correctly detected by the classifier.
+| File | Description |
+|------|-------------|
+| `compare_tpr_20_50.png` | TPR comparison bar chart |
+| `compare_fpr_20_50.png` | FPR comparison bar chart |
+| `compare_accuracy_20_50.png` | Accuracy comparison |
+| `compare_f1_20_50.png` | F1-Score comparison |
+| `classifier_comparison.png` | Average metrics across all classifiers |
+| `performance_heatmaps.png` | Per-class performance heatmaps |
+| `radar_charts_top4.png` | Radar charts for top 4 classifiers |
+| `class_difficulty_analysis.png` | Attack detection difficulty ranking |
+| `summary_report.png` | Comprehensive summary statistics |
 
-**Where:**
+---
 
-* **TP (True Positives):** number of attack instances correctly classified as attacks.
+## 🗂️ Dataset Format
 
-* **FN (False Negatives):** number of attack instances incorrectly classified as normal (missed attacks).
+### Expected Input
+- **File**: `data.csv` (or specify via `-csv` flag)
+- **Format**: Comma-separated values
+- **Rows**: Network port statistics records
+- **Columns**: 32 features + 1 label column
 
-**A higher TPR means the IDS is better at detecting attacks.**
+### Classes (6 categories)
+| ID | Class | Description |
+|----|-------|-------------|
+| 0 | Normal | Normal network traffic |
+| 1 | Blackhole | Blackhole attack |
+| 2 | TCP-SYN | TCP-SYN flood attack |
+| 3 | PortScan | Port scanning activity |
+| 4 | Diversion | Traffic diversion attack |
+| 5 | Overflow | Buffer overflow attack |
 
-### **2\. What is a False Positive Rate (FPR)?**
+### Feature List
+- Switch ID, Port Number
+- Packet counts (Received/Sent)
+- Byte counts (Received/Sent)
+- Port alive duration
+- Dropped packets/errors
+- Delta features (rate of change)
+- Connection Point identifiers
+- Load/Rate metrics
+- Flow table statistics
+- ... (32 total features)
 
-The **False Positive Rate (FPR)** measures how many normal instances are incorrectly classified as attacks.
+**Note**: The label column should be named `Label` in the CSV (automatically renamed to `Class`)
 
-**Where:**
+---
 
-* **FP (False Positives):** number of normal instances incorrectly classified as attacks (false alarms).
+## ⚙️ Configuration
 
-* **TN (True Negatives):** number of normal instances correctly classified as normal.
+### Modify Classifiers
+Edit `Classify.py` to add/remove models or adjust hyperparameters:
+```python
+classifiers = [
+    HistGradientBoostingClassifier(...),
+    MLPClassifier(...),
+    # Add your classifier here
+]
+```
 
-**A lower FPR means fewer false alarms in the IDS.**
+### Change Test Splits
+Edit `IDS.py` to modify split percentages:
+```python
+CL.classify(dataset, csv_filename, testSize=20)  # Change 20 to desired %
+CL.classify(dataset, csv_filename, testSize=50)  # Change 50 to desired %
+```
 
-### **3\. What TPR and FPR are produced by the MLPClassifier?**
+### Adjust Ensemble Weights
+Modify the `weights` list in `Classify.py`:
+```python
+weights = [0.25, 0.01, 0.02, 0.25, 0.18, 0.09, 0.05]  # Must sum to 1.0
+```
 
-For the MLPClassifier (Neural Networks), the True Positive Rate (TPR) and False Positive Rate (FPR) were calculated from the evaluation results as follows:
+---
 
-* With 20% test size, the MLPClassifier achieved an  
-   Average TPR of approximately 0.1948 and an  
-   Average FPR of approximately 0.1557.
+## 🔬 Performance Metrics
 
-* With 50% test size, the MLPClassifier achieved an  
-   Average TPR of approximately 0.1822 and an  
-   Average FPR of approximately 0.1578.
+The system calculates both **per-class** and **aggregate** metrics:
 
-These results indicate that the MLPClassifier performs poorly in detecting attack classes, with a low TPR (around 18–19%) and a relatively high FPR (around 15–16%). This makes it unsuitable as a standalone Intrusion Detection System in this dataset
+- **TPR (True Positive Rate)**: Sensitivity/recall
+- **FPR (False Positive Rate)**: Type I error rate
+- **Accuracy**: Overall correctness
+- **F1-Score**: Harmonic mean of precision and recall
+- **Precision**: Positive predictive value
 
-### **4\. Is it possible to improve these values? Give two approaches.**
+All metrics are computed per-class then averaged for final comparison.
 
+---
+
+## 🛡️ Use Cases
+
+- **Network Security Monitoring**: Real-time IDS deployment
+- **Research**: Compare ML algorithms for intrusion detection
+- **Academic**: Benchmark dataset analysis
+- **Enterprise**: Evaluate detection difficulty of different attack types
+- **Model Selection**: Identify best classifier for specific threat types
+
+---
+
+## ⚠️ Important Notes
+
+1. **Minimum Data**: Requires at least 29 records for meaningful analysis
+2. **Missing Values**: Automatically handles NaN via linear interpolation
+3. **File Naming**: Results files must follow pattern `*.results.txt` for CSV export
+4. **Reproducibility**: `random_state=0` ensures consistent results
+5. **Class Imbalance**: All classifiers use balanced weighting
+
+---
+
+## 🐛 Troubleshooting
+
+**Issue**: "No results files found"
+- **Solution**: Run `IDS.py` first to generate `.results.txt` files
+
+**Issue**: "Cannot overwrite combined_results.csv"
+- **Solution**: Close the CSV file if open in Excel/another program
+
+**Issue**: Import errors
+- **Solution**: Verify all packages in `requirements.txt` are installed:
+  ```bash
+  pip install pandas numpy scikit-learn seaborn matplotlib
+  ```
+
+**Issue**: Memory errors on large datasets
+- **Solution**: Reduce dataset size or decrease `n_estimators` in tree-based models
+
+---
+
+## 📚 Dependencies
+
+```
+pandas>=1.5.0      # Data manipulation
+numpy>=1.24.0      # Numerical operations
+scikit-learn>=1.3  # ML algorithms
+matplotlib>=3.7    # Plotting
+seaborn>=0.13.2    # Statistical visualizations
+```
+
+
+---
+
+## 📝 License
+
+This project is provided as-is for research and educational purposes.
+
+---
+
+## 🤝 Contributing
+
+- **Abdulaziz Alessa**
+    
+- **Turki Alsalama**
+    
+- **Ziyad Abdulqader** 
+    
+- **Mutlaq Allahaydan**
+    
+- **Omran Alharbi**
+    
+
+**Instructor**: Shahid Alam  
+**Course**: Network Security
+**Date**: 12/10/2025
+
+---
+
+**⭐ If this project helps your research, please consider giving it a star!**
+
+For questions or issues, please open a GitHub issue or contact the author.
