@@ -50,6 +50,9 @@ class Classifier:
 		classifiers = [
         		HistGradientBoostingClassifier(random_state=0, class_weight='balanced'),
 				MLPClassifier(solver='lbfgs', alpha=1e-5, hidden_layer_sizes=(5, 2), random_state=0),
+				SVC(kernel='rbf', probability=True, random_state=0),
+				GradientBoostingClassifier(random_state=0),
+			
     		## Calibrated Classifiers ##
 			CalibratedClassifierCV(
       			RandomForestClassifier(n_estimators=100, random_state=0, class_weight='balanced'),
@@ -57,8 +60,6 @@ class Classifier:
 			CalibratedClassifierCV(
 				AdaBoostClassifier(random_state=0),
 			method='isotonic'),
-					GradientBoostingClassifier(random_state=0),
-				SVC(kernel='rbf', probability=True, random_state=0),
 			CalibratedClassifierCV(
     			GaussianNB(),
        		method='isotonic'
@@ -191,3 +192,4 @@ class Classifier:
 		result += "Average Precision = " + str(mean_precision) + "\n\n"
 
 		return result
+
