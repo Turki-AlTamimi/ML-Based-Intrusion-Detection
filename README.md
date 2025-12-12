@@ -50,8 +50,8 @@ IDS-Project/
 
 1. Clone the repository:
 ```bash
-git clone <repository-url>
-cd IDS-Project
+git clone https://github.com/Turki-AlTamimi/ML-Based-Intrusion-Detection.git
+cd ML-Based-Intrusion-Detection
 ```
 
 2. Install dependencies:
@@ -266,12 +266,15 @@ This project is provided as-is for research and educational purposes.
 - **Mutlaq Allahaydan**
     
 - **Omran Alharbi**
-    
 
-**Instructor**: Shahid Alam  
-**Course**: Network Security
+**Instructor**: Shahid Alam
 **Date**: 12/10/2025
+Licensed under the MIT License
 
+---
+[![Python 3.7+](https://img.shields.io/badge/python-3.7+-blue.svg)](https://www.python.org/downloads/)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![GitHub stars](https://img.shields.io/github/stars/username/repo.svg?style=social)](https://github.com/Turki-AlTamimi/ML-Based-Intrusion-Detection)
 ---
 
 **⭐ If this project helps your research, please consider giving it a star!**
