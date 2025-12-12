@@ -38,35 +38,30 @@ class Classifier:
 		X = np.array(X)
 
 		names = [
-				"HistGradientBoosting", #best
+				"HistGradientBoosting",
 				"Neural Networks",
-				"Random Forest", #added
-				"AdaBoost", #added
-				"Gradient Boosting", #added
-				"SVM", #added
-				"Naive Bayes" #added
-				
+				"Random Forest",
+				"AdaBoost", 
+				"Gradient Boosting",
+				"SVM",
+				"Naive Bayes",
 				]
 		classifiers = [
         		HistGradientBoostingClassifier(random_state=0, class_weight='balanced'),
 				MLPClassifier(solver='lbfgs', alpha=1e-5, hidden_layer_sizes=(5, 2), random_state=0),
-				SVC(kernel='rbf', probability=True, random_state=0),
+				CalibratedClassifierCV(
+      				RandomForestClassifier(n_estimators=100, random_state=0, class_weight='balanced'),
+				method='isotonic'),
+				CalibratedClassifierCV(
+					AdaBoostClassifier(random_state=0),
+				method='isotonic'),
 				GradientBoostingClassifier(random_state=0),
-			
-    		## Calibrated Classifiers ##
-			CalibratedClassifierCV(
-      			RandomForestClassifier(n_estimators=100, random_state=0, class_weight='balanced'),
-			method='isotonic'),
-			CalibratedClassifierCV(
-				AdaBoostClassifier(random_state=0),
-			method='isotonic'),
-			CalibratedClassifierCV(
-    			GaussianNB(),
-       		method='isotonic'
-         )
+				SVC(kernel='rbf', probability=True, random_state=0),
+				CalibratedClassifierCV(
+    				GaussianNB(),
+       			method='isotonic')
 		]
-
-  
+		
 		# ---------- weighted ensemble voting ----------
 		names.append("Weighted Ensemble Voting")
 		weights = [9, 0, 4, 2, 7, 1, 1]   # order matching the tuple list below
@@ -84,7 +79,7 @@ class Classifier:
 			weights=weights
 		)
 		classifiers.append(ensemble)
-
+  
 		# It's not an n-fold cross validation but a split
 		ts = testSize
 		testSize = testSize / 100
